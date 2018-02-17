@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.prg</groupId>
+        <artifactId>PrgESB</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+
+    </parent>
+
+    <groupId>com.prg</groupId>
+    <artifactId>CarDeployer</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <build>
+        <plugins>
+            <!-- use this to copy the car files to the server -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <configuration>
+                            <target>
+                                <!-- <property name="deployment.dir" value="/Users/srinath/playground/PremierResearchQSP/wso2ei-6.1.1"/> -->
+                                <fail message="Set property &quot;deployment.dir&quot; via -Ddeployment.dir=EI installation Directory">
+                                    <condition>
+                                        <or>
+                                            <equals arg1="${deployment.dir}" arg2=""/>
+                                            <not>
+                                                <isset property="deployment.dir"/>
+                                            </not>
+                                        </or>
+                                    </condition>
+                                </fail>
+
+                                <condition property="deployment.env" value="dev">
+                                    <not>
+                                        <isset property="deployment.env"/>
+                                    </not>
+                                </condition>
+
+
+                                <!-- this is to avoid an error with a fresh pack -->
+                                <mkdir dir="${deployment.dir}/repository/deployment/server/synapse-configs/default/tasks"/>
+                                <mkdir dir="${deployment.dir}/repository/deployment/server/synapse-configs/default/endpoints"/>
+
+
+                                <!-- delete all esb configs -->
+                                <delete verbose="true">
+                                    <fileset dir="${deployment.dir}/repository/deployment/server/synapse-configs/default/proxy-services" includes="*"/>
+                                    <fileset dir="${deployment.dir}/repository/deployment/server/synapse-configs/default/sequences" includes="*"/>
+                                    <fileset dir="${deployment.dir}/repository/deployment/server/synapse-configs/default/tasks" includes="*"/>
+                                    <!-- <fileset dir="${deployment.dir}/repository/deployment/server/synapse-configs/default/templates" includes="*"/> -->
+                                    <fileset dir="${deployment.dir}/repository/deployment/server/synapse-configs/default/endpoints" includes="*"/>
+                                    <fileset dir="${deployment.dir}/lib" includes="com.prg*.jar"/>
+                                </delete>
+
+
+                                <!-- copy configurations, we use filtering to setup the enviorments -->
+                                <copy todir="${deployment.dir}/conf/axis2" flatten="true" verbose="true" overwrite="true">
+                                    <fileset dir="../Configuration/server_config/esb">
+                                        <include name="axis2.xml"/>
+                                    </fileset>
+                                </copy>
+
+
+                                <!-- we copy configs using filters based on the enviorment -->
+                                
+                                <copy todir="${deployment.dir}/conf" flatten="true" verbose="true" overwrite="true">
+                                    <fileset dir="../Configuration/server_config/esb">
+                                        <include name="jndi.properties"/>
+                                    </fileset>
+                                    <filterset>
+                                        <filtersfile file="../Configuration/env_conf/${deployment.env}.properties"/>
+                                    </filterset>
+                                </copy>
+
+                                <copy todir="${deployment.dir}/repository/deployment/server/synapse-configs/default/local-entries" flatten="true" verbose="true" overwrite="true">
+                                    <fileset dir="../Configuration/src/main/synapse-config/local-entries">
+                                        <include name="*"/>
+                                    </fileset>
+                                    <filterset>
+                                        <filtersfile file="../Configuration/env_conf/${deployment.env}.properties"/>
+                                    </filterset>
+                                </copy>
+
+                                <!-- this folder might not be created in the pack sometime -->
+                                <copy todir="${deployment.dir}/repository/deployment/server/synapse-configs/default/endpoints" flatten="true" verbose="true">
+                                    <fileset dir="..">
+                                        <include name="**/endpoints/*.xml"/>
+                                    </fileset>
+                                    <filterset>
+                                        <filtersfile file="../Configuration/env_conf/${deployment.env}.properties"/>
+                                    </filterset>
+                                </copy>
+
+                                <!-- end of copy configurations -->
+
+
+                                <!-- copy esb deployable artifacts -->
+
+                                <copy todir="${deployment.dir}/repository/deployment/server/synapse-configs/default/proxy-services" flatten="true" verbose="true">
+                                    <fileset dir="..">
+                                        <include name="**/proxy-services/*.xml"/>
+                                        <exclude name="dataQueryService-test*"/>
+                                    </fileset>
+
+                                </copy>
+
+
+
+                                <copy todir="${deployment.dir}/repository/deployment/server/synapse-configs/default/sequences" flatten="true" verbose="true">
+                                    <fileset dir="..">
+                                        <include name="**/sequences/*.xml"/>
+                                    </fileset>
+                                </copy>
+
+                                <!-- enable tasks
+                                <copy todir="${deployment.dir}/repository/deployment/server/synapse-configs/default/tasks" flatten="true" verbose="true">
+                                    <fileset dir="..">
+                                        <include name="**/tasks/*.xml"/>
+                                    </fileset>
+                                </copy>
+                                -->
+                                <copy todir="${deployment.dir}/repository/deployment/server/synapse-configs/default/templates" flatten="true" verbose="true">
+                                    <fileset dir="..">
+                                        <include name="**/templates/*.xml"/>
+                                    </fileset>
+                                </copy>
+
+                                <!-- copy esb deployable artifacts -->
+
+
+                                <!-- copy jars dependancies -->
+                                <!--  copy mb dependancies -->
+                                <copy todir="${deployment.dir}/lib" flatten="true" verbose="true">
+                                    <fileset dir="${deployment.dir}/wso2/broker/client-lib/">
+                                        <include name="andes-client-3.2.19.jar"/>
+                                    </fileset>
+                                </copy>
+
+
+                                <copy todir="${deployment.dir}/lib" flatten="true" verbose="true" overwrite="true">
+                                    <fileset dir="../Mediators/">
+                                        <include name="**/target/com.prg*.jar"/>
+                                    </fileset>
+                                    <fileset dir="../Mediators/MediatorUtil/lib">
+                                        <include name="*.jar"/>
+                                    </fileset>
+                                </copy>
+                                <!-- end of copy jars dependancies -->
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
