@@ -1,0 +1,42 @@
+#Call this to run full flow/ CPTQueryScheduler
+================================================
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction:urn:mediate" --data @dataQueryServiceRequest.xml http://127.0.0.1:8280/services/CPTQueryScheduler
+
+Simple SOAP Call
+================
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction:urn:mediate" --data @basic-soap.xml http://127.0.0.1:8280/services/TextProxy.TextProxyHttpSoap12Endpoint
+
+Call this to test data query service
+=====================================
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction:urn:mediate" --data @dataQueryServiceRequest.xml http://127.0.0.1:8280/services/dataQueryService.dataQueryServiceHttpSoap12Endpoint
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction:urn:mediate" --data @CompanyPublish.xml http://127.0.0.1:8280/services/EventPublisherProxy
+
+#MultiEventPublisher
+====================
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction:urn:mediate" --data @MultiEventPublisherRequest.xml http://127.0.0.1:8280/services/MultiEventPublisher
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction:urn:mediate" --data @MultiEventPublisherRequest.xml http://127.0.0.1:8280/services/MultiEventPublisher
+
+#EventPublisher-Employee event
+=============================
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction:urn:mediate" --data @employeeEvent.xml http://127.0.0.1:8280/services/EventPublisherProxy
+
+#EventPublisher - emplyeeEventNew
+=================================
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction:urn:mediate" --data @employeeEventNew.xml http://127.0.0.1:8280/services/EventPublisherProxy
+
+#MultiEventPublisher (test with large number of events) - employeeEventsLarge.xml
+=================================================================================
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction:urn:mediate" --data @employeeEventsLarge.xml http://127.0.0.1:8280/services/MultiEventPublisher
+
+#MultiEventPublisher (test with small number of events)
+=================================================================================
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction:urn:mediate" --data @multipleEmployeeEventsSmall.xml http://127.0.0.1:8280/services/MultiEventPublisher
+
+EDS request
+===========
+curl --header "Content-Type: text/xml;charset=UTF-8" --header "SOAPAction:urn:mediate" --data @EDSRequest.xml http://127.0.0.1:8280/services/EventSubscriberProxy.EventSubscriberProxyHttpSoap12Endpoint
+
+
+
+#better way to trace
+./integrator.sh  | tee out.log | grep -E 'prg|Error|Exception'

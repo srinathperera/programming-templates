@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoint name="MultiEventPublisherEndpoint" xmlns="http://ws.apache.org/ns/synapse">
+     <!-- <address uri="http://localhost:8280/services/TextProxy"/>
+    <address uri="http://localhost:8280/services/MultiEventPublisher"/> -->
+    <address uri="http://@host@:8280/services/MultiEventPublisher"/>
+</endpoint>

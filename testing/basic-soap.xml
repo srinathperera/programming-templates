@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://schemas.conversesolutions.com/xsd/dmticta/v1">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <v1:GetVehicleLimitedInfo>
+            <v1:vehicleNo>1</v1:vehicleNo>
+            <v1:phoneNo>2</v1:phoneNo>
+        </v1:GetVehicleLimitedInfo>
+    </soapenv:Body>
+</soapenv:Envelope>

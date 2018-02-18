@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Sealed: true
+Ant-Version: Apache Ant 1.7.1
+Created-By: TA.Nguyen.10.22.2013-10.00.00 (Premier-Research)
+Specification-Title: Enterprise Transformation Service (ETS)
+Specification-Version: 1.0
+Implementation-Title: Enterprise Transformation Service Implementation
+Implementation-Version: 1.0.0.2
+Implementation-Vendor: Premier-Research
+Extension-Name: ets
+Name: TransformationService
+Sealed: false

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.prg</groupId>
+        <artifactId>PrgESB</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <groupId>com.prg.esb.java</groupId>
+    <artifactId>com.prg.esb.JavaUtils</artifactId>
+    <version>1.0.0</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>${project.basedir}/../Mediators/MediatorUtil/web/WEB-INF/lib/*.jar</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>DataQueryService/src/main/java</source>
+                                <source>EDSDataService/src/main/java</source>
+                                <source>NotificationService/src/main/java</source>
+                                <source>TransformationService/src/main/java</source>
+                                <source>TransportationService/src/main/java</source>
+                                <source>Utils/src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.ojdbc7</groupId>
+            <artifactId>ojdbc7</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/DataQueryService/lib/ojdbc7.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>sqljdbc41</groupId>
+            <artifactId>sqljdbc41</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/EDSDataService/lib/sqljdbc41.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/NotificationService/lib/mail.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>jms-api</groupId>
+            <artifactId>jms-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/TransformationService/lib/javax.jms-api-2.0.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>jaxp-api</groupId>
+            <artifactId>jaxp-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/TransformationService/lib/jaxp-api.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>jaxp-ri</groupId>
+            <artifactId>jaxp-ri</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/TransformationService/lib/jaxp-ri.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>saxon9</groupId>
+            <artifactId>saxon9</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/TransformationService/lib/saxon9.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>xelem</groupId>
+            <artifactId>xelem</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/TransformationService/lib/xelem.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>cnci-utils_all</groupId>
+            <artifactId>cnci-utils_all</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../Mediators/MediatorUtil/lib/cnci-utils_all.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>2.10.0</version>
+            <type>pom</type>
+        </dependency>
+
+
+
+
+
+    </dependencies>
+
+
+</project>

@@ -1,0 +1,20 @@
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="OrchestratorProxy"
+       startOnLoad="true"
+       statistics="disable"
+       trace="disable"
+       transports="http,https">
+    <target>
+        <inSequence>
+            <sequence key="MainFlowSequence"/>
+            <respond/>
+        </inSequence>
+        <outSequence>
+            <drop/>
+        </outSequence>
+        <faultSequence>
+            <sequence key = "faultSequence" />
+        </faultSequence>
+    </target>
+</proxy>
+

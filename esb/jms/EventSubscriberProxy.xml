@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="EventSubscriberProxy"
+       transports="http https jms"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <log level="full">
+            <property name="prg.EventSubscriberProxy" value="Message received"/>
+         </log>
+         <payloadFactory media-type="xml">
+            <format>
+               <serviceRequest>
+                  <requestId>UUID</requestId>
+                  <entity>Employee</entity>
+                  <serviceName>edsSubscriberProxy</serviceName>
+                  <environment>DEV</environment>
+                  <requestData>
+                     <data name="type" type="string">InsertEvent</data>
+                     <data name="param1" type="xml">$1</data>
+                  </requestData>
+               </serviceRequest>
+            </format>
+            <args>
+               <arg xmlns:evt="http://xsd.premier-research.com/v1.0/event" evaluator="xml"
+                    expression="//evt:event"/>
+            </args>
+         </payloadFactory>
+         <property name="insertType" value="InsertEvent"/>
+         <property name="paramContent"
+                   expression="//evt:event" xmlns:evt="http://xsd.premier-research.com/v1.0/event"/>
+         <log level="full">
+            <property name="prg.EventSubscriberProxy" value="Message transformed"/>
+         </log>
+         <class name="com.prg.esb.mediator.eds.EDSDataMediator"/>
+         <drop/>
+      </inSequence>
+      <outSequence/>
+      <faultSequence/>
+   </target>
+   <parameter name="transport.jms.ContentType">
+      <rules xmlns="">
+         <jmsProperty>contentType</jmsProperty>
+         <default>application/xml</default>
+      </rules>
+   </parameter>
+   <parameter name="transport.jms.ConnectionFactory">myTopicConnectionFactory</parameter>
+   <parameter name="transport.jms.Destination">EventTopic</parameter>
+</proxy>
